@@ -4,15 +4,9 @@ import android.content.Context
 
 class NativeLib {
 
-    /**
-     * A native method that is implemented by the 'nativelib' native library,
-     * which is packaged with this application.
-     */
-    external fun stringFromJNI(): String
+    external fun signatureParams(param: String): String
 
-    external fun signatureParam(param:String): String
-
-    external fun signatureVerify(context: Context): String
+    external fun signatureVerify(context: Context)
 
     companion object {
         // Used to load the 'nativelib' library on application startup.
