@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity() {
         Log.i(TAG, "signature:$signature")
         val nativeLib = NativeLib()
         nativeLib.signatureVerify(this)
+
+        nativeLib.signatureParams("userName=240336124&userPwd=123456")
     }
 
     companion object {

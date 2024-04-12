@@ -82,22 +82,35 @@ Java_com_ygq_ndk_signature_NativeLib_signatureVerify(JNIEnv *env, jobject type, 
     j_mid = env->GetMethodID(j_class, "getPackageInfo", "(Ljava/lang/String;I)Landroid/content/pm/PackageInfo;");
     jobject package_info = env->CallObjectMethod(pm, j_mid, j_package_name, 0x00000040);
 
+    env->ReleaseStringUTFChars(j_package_name,package_name_str);
+    env->DeleteLocalRef(j_package_name);
+    env->DeleteLocalRef(pm);
+
     //获取变量signatures
     j_class = env->GetObjectClass(package_info);
     jfieldID j_fid = env->GetFieldID(j_class, "signatures", "[Landroid/content/pm/Signature;");
     jobjectArray signatures_array = (jobjectArray) env->GetObjectField(package_info, j_fid);
+    env->DeleteLocalRef(package_info);
+
     //获取signatures[0]
     jobject signature_obj = env->GetObjectArrayElement(signatures_array, 0);
+    env->DeleteLocalRef(signatures_array);
 
     //调用Signature的toCharsString
     j_class = env->GetObjectClass(signature_obj);
     j_mid = env->GetMethodID(j_class, "toCharsString", "()Ljava/lang/String;");
+    env->DeleteLocalRef(j_class);
+
     jstring signature_jstr = (jstring) env->CallObjectMethod(signature_obj, j_mid);
+
+    env->DeleteLocalRef(signature_obj);
     const char *signature_str = (char *) env->GetStringUTFChars(signature_jstr, NULL);
     if (strcmp(signature_str, APP_SIGNATURE) != 0) {
         LOGE("app signature fail");
         return;
     }
+    env->ReleaseStringUTFChars(signature_jstr,signature_str);
+    env->DeleteLocalRef(signature_jstr);
     is_verify = 1;
     LOGI("app signature success");
 }
