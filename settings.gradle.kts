@@ -17,3 +17,4 @@ rootProject.name = "MyNDkDemo"
 include(":app")
 include(":day01")
 include(":day02")
+include(":ffmpeg-cmd")
