@@ -5,6 +5,11 @@
 extern "C"{
 #include <libavcodec/version.h>
 #include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
+#include <libavutil/avutil.h>
+#include <libavfilter/avfilter.h>
+#include <libswresample/swresample.h>
+#include <libswscale/swscale.h>
 }
 
 using namespace std;
