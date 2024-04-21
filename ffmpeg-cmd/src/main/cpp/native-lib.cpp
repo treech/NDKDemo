@@ -2,6 +2,11 @@
 #include <string>
 #include <android/log.h>
 
+extern "C"{
+#include <libavcodec/version.h>
+#include <libavcodec/avcodec.h>
+}
+
 using namespace std;
 
 //定义TAG之后，我们可以在LogCat通过TAG过滤出NDK打印的日志
@@ -17,20 +22,21 @@ using namespace std;
 // 声明方法(实现的方式就是基于命令，windows )
 // argc 命令的个数
 // char **argv 二维数组
-int ffmpegmain(int argc, char **argv,void(call_back)(int,int));
+int ffmpegmain(int argc, char **argv, void(call_back)(int, int));
 
 // 回调函数
 static jobject call_back_jobj;
 static JNIEnv *mEnv;
-void call_back(int current,int total){
+
+void call_back(int current, int total) {
     // LOGE("压缩进度：%d/%d",current,total);
     // 把进度回调出去 对象是 jobject callback
-    if(call_back_jobj != NULL && mEnv != NULL){
+    if (call_back_jobj != NULL && mEnv != NULL) {
         // C进阶再去讲 指针，什么是内存，内存模型 , 获取 j_mid 是会被多次执行
         jclass j_clazz = mEnv->GetObjectClass(call_back_jobj);
         // javap 命令也能打印
-        jmethodID j_mid = mEnv->GetMethodID(j_clazz,"onCompress","(II)V");
-        mEnv->CallVoidMethod(call_back_jobj,j_mid,current,total);
+        jmethodID j_mid = mEnv->GetMethodID(j_clazz, "onCompress", "(II)V");
+        mEnv->CallVoidMethod(call_back_jobj, j_mid, current, total);
     }
 }
 
@@ -45,11 +51,11 @@ Java_com_ygq_ndk_ffmpeg_cmd_NativeLib_compressVideo(JNIEnv *env, jobject thiz, j
     // 1. 获取命令的个数
     int argc = env->GetArrayLength(compress_command);
     // 2. 给 char **argv 填充数据
-    char **argv = (char **) malloc(sizeof(char*) * argc);
+    char **argv = (char **) malloc(sizeof(char *) * argc);
     for (int i = 0; i < argc; ++i) {
         jstring j_param = (jstring) env->GetObjectArrayElement(compress_command, i);
         argv[i] = (char *) env->GetStringUTFChars(j_param, NULL);
-        LOGE("参数：%s",argv[i]);
+        LOGE("参数：%s", argv[i]);
     }
     // 3. 调用命令函数去压缩，回调处理
 //    ffmpegmain(argc,argv,call_back);
@@ -60,4 +66,27 @@ Java_com_ygq_ndk_ffmpeg_cmd_NativeLib_compressVideo(JNIEnv *env, jobject thiz, j
     }
     free(argv);
     env->DeleteGlobalRef(call_back_jobj);
+}
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_com_ygq_ndk_ffmpeg_cmd_NativeLib_getFFmpegVersion(JNIEnv *env, jobject thiz) {
+    char strBuffer[1024 * 4] = {0};
+    strcat(strBuffer, "libavcodec : ");
+    strcat(strBuffer, AV_STRINGIFY(LIBAVCODEC_VERSION));
+    strcat(strBuffer, "\nlibavformat : ");
+    strcat(strBuffer, AV_STRINGIFY(LIBAVFORMAT_VERSION));
+    strcat(strBuffer, "\nlibavutil : ");
+    strcat(strBuffer, AV_STRINGIFY(LIBAVUTIL_VERSION));
+    strcat(strBuffer, "\nlibavfilter : ");
+    strcat(strBuffer, AV_STRINGIFY(LIBAVFILTER_VERSION));
+    strcat(strBuffer, "\nlibswresample : ");
+    strcat(strBuffer, AV_STRINGIFY(LIBSWRESAMPLE_VERSION));
+    strcat(strBuffer, "\nlibswscale : ");
+    strcat(strBuffer, AV_STRINGIFY(LIBSWSCALE_VERSION));
+    strcat(strBuffer, "\navcodec_configure : \n");
+    strcat(strBuffer, avcodec_configuration());
+    strcat(strBuffer, "\navcodec_license : ");
+    strcat(strBuffer, avcodec_license());
+    LOGE("getFFmpegVersion:%s", strBuffer);
+    return env->NewStringUTF(strBuffer);
 }

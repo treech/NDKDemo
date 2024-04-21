@@ -12,6 +12,8 @@ class NativeLib {
     // native ffmpeg 压缩视频
     external fun compressVideo(compressCommand: Array<String>, callback: CompressCallback)
 
+    external fun getFFmpegVersion():String
+
     interface CompressCallback {
         fun onCompress(current: Int, total: Int)
     }
