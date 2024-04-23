@@ -2,7 +2,7 @@
 #include <string>
 #include <android/log.h>
 
-extern "C"{
+extern "C" {
 #include <libavcodec/version.h>
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
@@ -15,7 +15,7 @@ extern "C"{
 using namespace std;
 
 //定义TAG之后，我们可以在LogCat通过TAG过滤出NDK打印的日志
-#define TAG "JNI_YGQ_DAY02"
+#define TAG "JNI_YGQ_FFMPEG"
 
 // 定义info信息
 #define LOGI(...) __android_log_print(ANDROID_LOG_INFO,TAG,__VA_ARGS__)
@@ -24,10 +24,13 @@ using namespace std;
 // 定义error信息
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR,TAG,__VA_ARGS__)
 
+extern "C"
+{
 // 声明方法(实现的方式就是基于命令，windows )
 // argc 命令的个数
 // char **argv 二维数组
 int ffmpegmain(int argc, char **argv, void(call_back)(int, int));
+}
 
 // 回调函数
 static jobject call_back_jobj;
@@ -45,8 +48,7 @@ void call_back(int current, int total) {
     }
 }
 
-extern "C"
-JNIEXPORT void JNICALL
+extern "C" JNIEXPORT void JNICALL
 Java_com_ygq_ndk_ffmpeg_cmd_NativeLib_compressVideo(JNIEnv *env, jobject thiz, jobjectArray compress_command, jobject callback) {
     call_back_jobj = env->NewGlobalRef(callback);
     mEnv = env;
@@ -63,7 +65,7 @@ Java_com_ygq_ndk_ffmpeg_cmd_NativeLib_compressVideo(JNIEnv *env, jobject thiz, j
         LOGE("参数：%s", argv[i]);
     }
     // 3. 调用命令函数去压缩，回调处理
-//    ffmpegmain(argc,argv,call_back);
+    ffmpegmain(argc, argv, call_back);
 
     // 4. 释放内存
     for (int i = 0; i < argc; ++i) {
@@ -72,8 +74,8 @@ Java_com_ygq_ndk_ffmpeg_cmd_NativeLib_compressVideo(JNIEnv *env, jobject thiz, j
     free(argv);
     env->DeleteGlobalRef(call_back_jobj);
 }
-extern "C"
-JNIEXPORT jstring JNICALL
+
+extern "C" JNIEXPORT jstring JNICALL
 Java_com_ygq_ndk_ffmpeg_cmd_NativeLib_getFFmpegVersion(JNIEnv *env, jobject thiz) {
     char strBuffer[1024 * 4] = {0};
     strcat(strBuffer, "libavcodec : ");

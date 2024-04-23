@@ -18,19 +18,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#ifndef SWRESAMPLE_VERSION_H
-#define SWRESAMPLE_VERSION_H
+#ifndef SWR_VERSION_H
+#define SWR_VERSION_H
 
 /**
  * @file
  * Libswresample version macros
  */
 
-#include "libavutil/version.h"
+#include "libavutil/avutil.h"
 
-#include "version_major.h"
-
-#define LIBSWRESAMPLE_VERSION_MINOR   2
+#define LIBSWRESAMPLE_VERSION_MAJOR   1
+#define LIBSWRESAMPLE_VERSION_MINOR   1
 #define LIBSWRESAMPLE_VERSION_MICRO 100
 
 #define LIBSWRESAMPLE_VERSION_INT  AV_VERSION_INT(LIBSWRESAMPLE_VERSION_MAJOR, \
@@ -43,4 +42,4 @@
 
 #define LIBSWRESAMPLE_IDENT        "SwR" AV_STRINGIFY(LIBSWRESAMPLE_VERSION)
 
-#endif /* SWRESAMPLE_VERSION_H */
+#endif /* SWR_VERSION_H */
