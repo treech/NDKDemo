@@ -15,7 +15,7 @@ extern "C"{
 using namespace std;
 
 //定义TAG之后，我们可以在LogCat通过TAG过滤出NDK打印的日志
-#define TAG "JNI_YGQ_DAY02"
+#define TAG "JNI_YGQ_ffmpeg-cmd"
 
 // 定义info信息
 #define LOGI(...) __android_log_print(ANDROID_LOG_INFO,TAG,__VA_ARGS__)
