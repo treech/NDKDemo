@@ -8,7 +8,7 @@
     <ImageView
         android:id="@+id/iv"
         android:layout_width="match_parent"
-        android:layout_height="600dp" />
+        android:layout_height="500dp" />
 
     <Button
         android:layout_width="match_parent"
@@ -22,6 +22,14 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#00ffff"
-        android:onClick="faceDetect"
-        android:text="人脸识别" />
+        android:onClick="faceDetectV1"
+        android:text="人脸识别V1" />
+
+    <Button
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#00ffff"
+        android:onClick="faceDetectV2"
+        android:text="人脸识别V2" />
 </LinearLayout>

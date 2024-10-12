@@ -12,6 +12,8 @@ class NativeLib {
 
         external fun grayTransform(src: Bitmap, dest: Bitmap): Boolean
 
-        external fun faceDetect(bitmap: Bitmap)
+        external fun detectFaces(src: Bitmap, dest: Bitmap,filePath: String):Boolean
+
+        external fun detectFacesV2(src: Bitmap, dest: Bitmap,filePath: String):Boolean
     }
 }
