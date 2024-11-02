@@ -1,4 +1,4 @@
-package com.ygq.ndk.day05.ui
+package com.ygq.ndk.day06.ui
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -7,9 +7,9 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.ygq.ndk.day05.NativeLib
-import com.ygq.ndk.day05.R
-import com.ygq.ndk.day05.databinding.ActivityMainBinding
+import com.ygq.ndk.day06.NativeLib
+import com.ygq.ndk.day06.R
+import com.ygq.ndk.day06.databinding.ActivityMainBinding
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException

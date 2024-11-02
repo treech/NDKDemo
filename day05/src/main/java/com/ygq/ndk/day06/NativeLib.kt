@@ -1,4 +1,4 @@
-package com.ygq.ndk.day05
+package com.ygq.ndk.day06
 
 import android.graphics.Bitmap
 

@@ -1,11 +1,11 @@
-package com.ygq.ndk.day05.ui;
+package com.ygq.ndk.day06.ui;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.ygq.ndk.day05.R;
+import com.ygq.ndk.day06.R;
 
 import org.opencv.android.CameraActivity;
 import org.opencv.android.CameraBridgeViewBase;
