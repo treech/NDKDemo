@@ -11,6 +11,15 @@ Java_com_ygq_ndk_day06_NativeLib_00024Companion_testNode(JNIEnv *env, jobject jo
     linkedList.push(1);
     linkedList.push(2);
 
+    linkedList.insert(2,3);
+
+    for (int i = 0; i < linkedList.size(); ++i) {
+        LOGI("index:%d,value:%d", i, linkedList.get(i));
+    }
+
+    LOGI("---------");
+
+    linkedList.remove(3);
     for (int i = 0; i < linkedList.size(); ++i) {
         LOGI("index:%d,value:%d", i, linkedList.get(i));
     }
