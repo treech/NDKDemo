@@ -22,6 +22,7 @@ class LinkedList {
 private:
     int len = 0;
     Node<E> *head = nullptr;
+    Node<E> *end = nullptr;
 public:
     void push(E e);
 
@@ -36,15 +37,28 @@ public:
     int size();
 };
 
+/*
 template<class E>
 void LinkedList<E>::push(E e) {
-    LOGI("push before linkedList size:%d", len);
     Node<E> *new_node = new Node<E>(e, nullptr);
     if (head) {
         Node<E> *last = findNode(len - 1);
         last->next = new_node;
     } else {
         head = new_node;
+    }
+    len++;
+}*/
+
+template<class E>
+void LinkedList<E>::push(E e) {
+    Node<E> *new_node = new Node<E>(e, nullptr);
+    if (head) {
+        end->next = new_node;
+        end = new_node;
+    } else {
+        head = new_node;
+        end = new_node;
     }
     len++;
 }

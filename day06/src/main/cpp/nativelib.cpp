@@ -7,20 +7,13 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_com_ygq_ndk_day06_NativeLib_00024Companion_testNode(JNIEnv *env, jobject jobj) {
     LinkedList<int> linkedList;
-    linkedList.push(0);
-    linkedList.push(1);
-    linkedList.push(2);
 
-    linkedList.insert(2,3);
-
-    for (int i = 0; i < linkedList.size(); ++i) {
-        LOGI("index:%d,value:%d", i, linkedList.get(i));
+    time_t start = clock();
+    for (int i = 0; i < 100000; ++i) {
+        linkedList.push(i);
     }
-
-    LOGI("---------");
-
-    linkedList.remove(3);
-    for (int i = 0; i < linkedList.size(); ++i) {
-        LOGI("index:%d,value:%d", i, linkedList.get(i));
-    }
+    time_t end = clock();
+    //list size:100000,consume time : 15 原来的push方式耗时
+    //list size:100000,consume time : 0 增加尾指针的方式耗时
+    LOGI("list size:%d,consume time : %d", linkedList.size(), (end - start) / CLOCKS_PER_SEC);
 }
