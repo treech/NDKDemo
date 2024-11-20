@@ -9,10 +9,12 @@
 template<class E>
 struct Node {
     E value;
+    Node<E> *pre;
     Node<E> *next;
 
-    Node(E value, Node<E> *next) {
+    Node(E value, Node<E> *pre, Node<E> *next) {
         this->value = value;
+        this->pre = pre;
         this->next = next;
     }
 };
@@ -28,13 +30,17 @@ public:
 
     void insert(int index, E e);
 
-    void remove(int index);
+    E remove(int index);
 
     Node<E> *findNode(int index);
 
     E get(int index);
 
     int size();
+
+    void linkLast(E e);
+
+    void linkBefore(Node<E> *cur, E e);
 };
 
 /*
@@ -52,7 +58,7 @@ void LinkedList<E>::push(E e) {
 
 template<class E>
 void LinkedList<E>::push(E e) {
-    Node<E> *new_node = new Node<E>(e, nullptr);
+    Node<E> *new_node = new Node<E>(e, end, nullptr);
     if (head) {
         end->next = new_node;
         end = new_node;
@@ -64,40 +70,56 @@ void LinkedList<E>::push(E e) {
 }
 
 template<class E>
+void LinkedList<E>::linkLast(E e) {
+    Node<E> *new_node = new Node<E>(e, end, nullptr);
+    if (head) {
+        end->next = new_node;
+        end = new_node;
+    } else {
+        head = new_node;
+        end = new_node;
+    }
+}
+
+template<class E>
+void LinkedList<E>::linkBefore(Node<E> *cur, E e) {
+    Node<E> *new_node = new Node<E>(e, cur->pre, cur);
+    cur->pre->next = new_node;
+    cur->pre = new_node;
+}
+
+template<class E>
 void LinkedList<E>::insert(int index, E e) {
     if (index > len - 1 || index < 0) {
         LOGE("index:%d illegal,must <= %d or > 0", index, len - 1);
         return;
     }
-    Node<E> *new_node = new Node<E>(e, nullptr);
-    if (index == 0) {
-        new_node->next = head;
-        head = new_node;
-    } else {
-        Node<E> *pre = findNode(index - 1);
-        new_node->next = pre->next;
-        pre->next = new_node;
-    }
+    Node<E> *node = findNode(index);
+    linkBefore(node, e);
     len++;
 }
 
 template<class E>
-void LinkedList<E>::remove(int index) {
+E LinkedList<E>::remove(int index) {
     if (index > len - 1 || index < 0) {
         LOGE("index:%d illegal,must <= %d or > 0", index, len - 1);
-        return;
+        return E();
     }
-    if (index == 0) {
-        Node<E> *cur = findNode(index);
+    Node<E> *cur = findNode(index);
+    if (cur->pre) {
+        cur->pre->next = cur->next;
+    } else {//头节点
         head = cur->next;
-        delete cur;
-    } else {
-        Node<E> *pre = findNode(index - 1);
-        Node<E> *cur = pre->next;
-        pre->next = cur->next;
-        delete cur;
     }
+    if (cur->next) {
+        cur->next->pre = cur->pre;
+    } else {//尾节点
+        end = cur->pre;
+    }
+    E value = cur->value;
+    delete cur;
     len--;
+    return value;
 }
 
 template<class E>
@@ -107,11 +129,21 @@ E LinkedList<E>::get(int index) {
 
 template<class E>
 Node<E> *LinkedList<E>::findNode(int index) {
-    Node<E> *last = head;
-    for (int i = 0; i < index; ++i) {
-        last = last->next;
+    if (index > len >> 1) {
+        //从后往前遍历
+        Node<E> *cur = end;
+        for (int i = len - 1; i > index; --i) {
+            cur = cur->pre;
+        }
+        return cur;
+    } else {
+        //从前往后遍历
+        Node<E> *cur = head;
+        for (int i = 0; i < index; ++i) {
+            cur = cur->next;
+        }
+        return cur;
     }
-    return last;
 }
 
 template<class E>
