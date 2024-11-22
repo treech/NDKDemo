@@ -41,7 +41,21 @@ public:
     void linkLast(E e);
 
     void linkBefore(Node<E> *cur, E e);
+
+    ~LinkedList();
 };
+
+template<class E>
+LinkedList<E>::~LinkedList() {
+    Node<E> *new_head = head;
+    while (new_head) {
+        Node<E> *temp = new_head->next;
+        delete new_head;
+        new_head = temp;
+    }
+    head = NULL;
+    end = NULL;
+}
 
 /*
 template<class E>
