@@ -21,7 +21,13 @@ class MainActivity : AppCompatActivity() {
         NativeLib.testNode()
     }
 
+
+    fun bubbleSort(view: View) {
+        NativeLib.bubbleSort()
+    }
+
     companion object {
         private const val TAG = "MainActivity"
     }
+
 }

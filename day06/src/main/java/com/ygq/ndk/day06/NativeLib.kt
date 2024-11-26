@@ -9,5 +9,7 @@ class NativeLib {
         }
 
         external fun testNode()
+
+        external fun bubbleSort()
     }
 }
