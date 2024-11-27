@@ -14,6 +14,20 @@ using namespace std;
 // 定义error信息
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR,TAG,__VA_ARGS__)
 
+#define MAX(a, b) a>b?a:b
+
+#define PRINT_MSG(msg, repeat_count) \
+            for(int i=0;i<repeat_count;i++){ \
+                    LOGE("i:%d,%s",i,msg);\
+            }
+
+#define PRINT(msg) PRINT_MSG(msg,1)
+
+#define LOG(level,...) \
+    LOGE("[" level "] " __VA_ARGS__);
+
+#define LOG_ERROR(...) LOG("ERROR",__VA_ARGS__)
+
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_ygq_ndk_day03_NativeLib_00024Companion_arraycopy(JNIEnv *env, jobject thiz, jobject src, jint src_pos, jobject dest, jint dest_pos, jint length) {
@@ -35,4 +49,17 @@ Java_com_ygq_ndk_day03_NativeLib_00024Companion_arraycopy(JNIEnv *env, jobject t
         jobject obj = env->GetObjectArrayElement(srcList, i);
         env->SetObjectArrayElement(destList, i + dest_pos, obj);
     }
+}
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_ygq_ndk_day03_NativeLib_00024Companion_defineFunTest(JNIEnv *env, jobject thiz) {
+    int x = 10, y = 20;
+    LOGE("max value:%d", MAX(x, y));
+
+    PRINT("Hello C++")
+    PRINT_MSG("Hello Android", 3)
+
+    LOG_ERROR("System is up and running.\n");
+    LOG_ERROR("This is a warning: %s\n", "Disk space low");
+    LOG_ERROR("Error occurred: %d\n", -1);
 }

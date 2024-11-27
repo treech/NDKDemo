@@ -2,6 +2,7 @@ package com.ygq.ndk.day03.ui
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.ygq.ndk.day03.NativeLib
 import com.ygq.ndk.day03.Student
@@ -25,6 +26,10 @@ class MainActivity : AppCompatActivity() {
         for (i in destList.indices) {
             Log.i(TAG, "index:$i,data:${destList[i]}")
         }
+    }
+
+    fun defineFunTest(view: View) {
+        NativeLib.defineFunTest()
     }
 
     companion object {

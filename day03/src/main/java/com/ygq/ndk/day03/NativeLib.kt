@@ -13,5 +13,7 @@ class NativeLib {
             dest: Any, destPos: Int,
             length: Int,
         )
+
+        external fun defineFunTest()
     }
 }
