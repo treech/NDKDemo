@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         val srcBitmap = BitmapFactory.decodeResource(resources, R.drawable.test)
         binding.srcImg.setImageBitmap(srcBitmap)
-        val dstBitmap = BitmapUtil.gray(srcBitmap)
+        val dstBitmap = BitmapUtil.grayV3(srcBitmap)
         binding.dstImg.setImageBitmap(dstBitmap)
     }
 
