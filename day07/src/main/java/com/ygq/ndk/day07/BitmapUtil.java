@@ -109,7 +109,7 @@ public class BitmapUtil {
     }
 
     /**
-     * 仅处理上半部分,没有创建副本，直接修改原图
+     * 仅处理上半部分,没有创建副本，直接修改原图，native层内存复用
      * 需要将isMutable设置为true或Options的属性inMutable为true，才能修改原图的像素，否则会直接抛异常
      *
      * @param src 原图
