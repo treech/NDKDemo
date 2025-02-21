@@ -1,5 +1,7 @@
 package com.ygq.ndk.day07
 
+import android.graphics.Bitmap
+
 class NativeLib {
 
     companion object {
@@ -7,9 +9,7 @@ class NativeLib {
         init {
             System.loadLibrary("nativelib")
         }
-
-        external fun testNode()
-
-        external fun bubbleSort()
     }
+
+    external fun gray(src: Bitmap)
 }

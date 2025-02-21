@@ -1,61 +1,37 @@
 #include <jni.h>
 #include <string>
 #include "log.h"
-#include "LinkedList.hpp"
+#include <android/bitmap.h>
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_ygq_ndk_day07_NativeLib_00024Companion_testNode(JNIEnv *env, jobject jobj) {
-    LinkedList<int> linkedList;
-    linkedList.push(0);
-    linkedList.push(1);
-    linkedList.push(5);
-    linkedList.push(6);
-    linkedList.push(7);
+Java_com_ygq_ndk_day07_NativeLib_gray(JNIEnv *env, jobject thiz, jobject src_bitmap) {
 
-    linkedList.insert(2, 2);
-
-    for (int i = 0; i < linkedList.size(); ++i) {
-        LOGI("index:%d,value:%d", i, linkedList.get(i));
+    AndroidBitmapInfo bitmap_info;
+    int info = AndroidBitmap_getInfo(env, src_bitmap, &bitmap_info);
+    if (info != 0) {
+        LOGE("get bitmap info error");
+        return;
     }
 
-    LOGI("---------");
+    void *addrPtr;
+    AndroidBitmap_lockPixels(env, src_bitmap, &addrPtr);
 
-    linkedList.remove(0);//删除头节点
-    linkedList.remove(1);//删除中间节点
-    linkedList.remove(linkedList.size() - 1);//删除尾节点
-    for (int i = 0; i < linkedList.size(); ++i) {
-        LOGI("index:%d,value:%d", i, linkedList.get(i));
+    for (int i = 0; i < bitmap_info.width * bitmap_info.height; i++) {
+        uint32_t *pixel_p = reinterpret_cast<uint32_t *>(addrPtr) + i;
+        uint32_t pixel = *pixel_p;
+        // 获取ARGB
+        int a = pixel >> 24 & 0xff;
+        int r = pixel >> 16 & 0xff;
+        int g = pixel >> 8 & 0xff;
+        int b = pixel & 0xff;
+
+        // 灰度图 0.11f * r + 0.59f * g + 0.30f * b
+        int gray = (int) (0.11f * r + 0.59f * g + 0.30f * b);
+
+        // 转回像素数据
+        *pixel_p = a << 24 | gray << 16 | gray << 8 | gray;
     }
-}
 
-/**
- * 冒泡排序
- * 外层循环控制排序的轮次，每轮排序会把最大值“冒泡”到数组的末尾。
- * 内层循环用于相邻元素的比较和交换。如果前一个元素大于后一个元素，就交换它们的位置。
- * 每次内层循环结束后，当前最大的元素就会被“冒泡”到数组的最后。
- */
-void bubbleSort(int arr[], int len) {
-    // 外层循环控制排序的轮次
-    for (int i = 0; i < len - 1; ++i) {
-        // 内层循环进行相邻元素的比较和交换
-        for (int j = 0; j < len - i - 1; ++j) {
-            if (arr[j] > arr[j + 1]) {
-                int temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
-            }
-        }
-    }
-}
-
-extern "C"
-JNIEXPORT void JNICALL
-Java_com_ygq_ndk_day07_NativeLib_00024Companion_bubbleSort(JNIEnv *env, jobject thiz) {
-    int arr[] = {-1, -2, -8, -18,-4};
-    bubbleSort(arr,  sizeof(arr) / sizeof(arr[0]));
-
-    for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); ++i) {
-        LOGI("index:%d,v:%d", i, arr[i]);
-    }
+    AndroidBitmap_unlockPixels(env, src_bitmap);
 }

@@ -3,7 +3,7 @@ package com.ygq.ndk.day07.ui
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.ygq.ndk.day07.BitmapUtil
+import com.ygq.ndk.day07.NativeLib
 import com.ygq.ndk.day07.R
 import com.ygq.ndk.day07.databinding.ActivityMainBinding
 
@@ -17,8 +17,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         val srcBitmap = BitmapFactory.decodeResource(resources, R.drawable.test)
         binding.srcImg.setImageBitmap(srcBitmap)
+        val nativeLib = NativeLib()
         val dstBitmap = srcBitmap.copy(srcBitmap.config, true)
-        BitmapUtil.grayV4(dstBitmap)
+        nativeLib.gray(dstBitmap)
         binding.dstImg.setImageBitmap(dstBitmap)
     }
 
