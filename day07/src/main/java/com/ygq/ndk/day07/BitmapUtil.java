@@ -10,6 +10,7 @@ public class BitmapUtil {
 
     /**
      * 使用ColorMatrix处理
+     *
      * @param src 原图
      * @return 处理后的图
      */
@@ -53,6 +54,7 @@ public class BitmapUtil {
 
     /**
      * 逐像素处理
+     *
      * @param src 原图
      * @return 处理后的图
      */
@@ -80,6 +82,7 @@ public class BitmapUtil {
 
     /**
      * 仅处理上半部分
+     *
      * @param src 原图
      * @return 处理后的图
      */
@@ -103,5 +106,31 @@ public class BitmapUtil {
         }
         dst.setPixels(pixels, 0, src.getWidth(), 0, 0, src.getWidth(), src.getHeight());
         return dst;
+    }
+
+    /**
+     * 仅处理上半部分,没有创建副本，直接修改原图
+     * 需要将isMutable设置为true或Options的属性inMutable为true，才能修改原图的像素，否则会直接抛异常
+     *
+     * @param src 原图
+     */
+    public static void grayV4(Bitmap src) {
+        int[] pixels = new int[src.getWidth() * src.getHeight()];
+        src.getPixels(pixels, 0, src.getWidth(), 0, 0, src.getWidth(), src.getHeight());
+        for (int i = 0; i < pixels.length / 2; i++) {
+            int pixel = pixels[i];
+            // 获取ARGB
+            int a = pixel >> 24 & 0xff;
+            int r = pixel >> 16 & 0xff;
+            int g = pixel >> 8 & 0xff;
+            int b = pixel & 0xff;
+
+            // 灰度图 0.11f * r + 0.59f * g + 0.30f * b
+            int gray = (int) (0.11f * r + 0.59f * g + 0.30f * b);
+
+            // 转回像素数据
+            pixels[i] = a << 24 | gray << 16 | gray << 8 | gray;
+        }
+        src.setPixels(pixels, 0, src.getWidth(), 0, 0, src.getWidth(), src.getHeight());
     }
 }
