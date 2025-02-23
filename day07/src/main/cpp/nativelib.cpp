@@ -9,7 +9,7 @@ Java_com_ygq_ndk_day07_NativeLib_gray(JNIEnv *env, jobject thiz, jobject src_bit
 
     AndroidBitmapInfo bitmap_info;
     int info = AndroidBitmap_getInfo(env, src_bitmap, &bitmap_info);
-    if (info != 0) {
+    if (info != ANDROID_BITMAP_RESULT_SUCCESS) {
         LOGE("get bitmap info error");
         return;
     }
