@@ -11,5 +11,7 @@ class NativeLib {
         }
 
         external fun againstWorld(src: Bitmap): Bitmap
+
+        external fun embossingEffects(src: Bitmap): Bitmap
     }
 }

@@ -109,3 +109,30 @@ Java_com_ygq_ndk_day08_NativeLib_00024Companion_againstWorld(JNIEnv *env, jobjec
     mat2bitmap(env, dest, bitmap);
     return bitmap;
 }
+
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_com_ygq_ndk_day08_NativeLib_00024Companion_embossingEffects(JNIEnv *env, jobject jcls, jobject bitmap) {
+    Mat src;
+    bitmap2Mat(env, src, bitmap);
+
+    Mat dest(src.size(), src.type());
+
+    int w = src.cols;
+    int h = src.rows;
+    for (int row = 0; row < h - 1; ++row) {
+        for (int col = 0; col < w - 1; ++col) {
+            Vec4b pixel_p = src.at<Vec4b>(row, col);
+            Vec4b pixel_n = src.at<Vec4b>(row + 1, col + 1);
+            // BGRA
+            // 处理BGR通道
+            dest.at<Vec4b>(row, col)[0] = saturate_cast<uchar>(pixel_p[0] - pixel_n[0] + 128);
+            dest.at<Vec4b>(row, col)[1] = saturate_cast<uchar>(pixel_p[1] - pixel_n[1] + 128);
+            dest.at<Vec4b>(row, col)[2] = saturate_cast<uchar>(pixel_p[2] - pixel_n[2] + 128);
+            // 保持Alpha通道不变
+            dest.at<Vec4b>(row, col)[3] = src.at<Vec4b>(row, col)[3];
+        }
+    }
+    mat2bitmap(env, dest, bitmap);
+    return bitmap;
+}
