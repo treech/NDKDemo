@@ -156,10 +156,10 @@ Java_com_ygq_ndk_day08_NativeLib_00024Companion_mosaicEffects(JNIEnv *env, jobje
             int end_col = min(col + size, w);
 
             // 10*10 获取当前块的左上角像素值
-            int pixel = src.at<int>(row, col);
+            Vec4b pixel = src.at<Vec4b>(row, col);
             for (int r = row; r < end_row; ++r) {
                 for (int c = col; c < end_col; ++c) {
-                    src.at<int>(r, c) = pixel;
+                    src.at<Vec4b>(r, c) = pixel;
                 }
             }
         }
