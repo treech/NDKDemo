@@ -136,3 +136,34 @@ Java_com_ygq_ndk_day08_NativeLib_00024Companion_embossingEffects(JNIEnv *env, jo
     mat2bitmap(env, dest, bitmap);
     return bitmap;
 }
+
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_com_ygq_ndk_day08_NativeLib_00024Companion_mosaicEffects(JNIEnv *env, jobject jcls, jobject bitmap) {
+    Mat src;
+    bitmap2Mat(env, src, bitmap);
+
+    int w = src.cols;
+    int h = src.rows;
+
+    // 马赛克块大小
+    int size = 50;
+
+    for (int row = 0; row < h; row += size) {
+        for (int col = 0; col < w; col += size) {
+            // 确保不越界
+            int end_row = min(row + size, h);
+            int end_col = min(col + size, w);
+
+            // 10*10 获取当前块的左上角像素值
+            int pixel = src.at<int>(row, col);
+            for (int r = row; r < end_row; ++r) {
+                for (int c = col; c < end_col; ++c) {
+                    src.at<int>(r, c) = pixel;
+                }
+            }
+        }
+    }
+    mat2bitmap(env, src, bitmap);
+    return bitmap;
+}

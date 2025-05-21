@@ -28,5 +28,9 @@ class MainActivity : AppCompatActivity() {
         val dest2 = src.copy(src.config, true)
         val againstBitmap2 = NativeLib.embossingEffects(dest2)
         binding.ivDest2.setImageBitmap(againstBitmap2)
+
+        val dest3 = src.copy(src.config, true)
+        val againstBitmap3 = NativeLib.mosaicEffects(dest3)
+        binding.ivDest3.setImageBitmap(againstBitmap3)
     }
 }

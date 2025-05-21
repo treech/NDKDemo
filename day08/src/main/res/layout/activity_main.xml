@@ -26,7 +26,16 @@
         android:id="@+id/iv_dest2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/iv_dest3"
         app:layout_constraintTop_toBottomOf="@id/iv_dest"
+        app:layout_constraintVertical_weight="1" />
+
+
+    <ImageView
+        android:id="@+id/iv_dest3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_dest2"
         app:layout_constraintVertical_weight="1" />
 </androidx.constraintlayout.widget.ConstraintLayout>
