@@ -15,5 +15,7 @@ class NativeLib {
         external fun embossingEffects(src: Bitmap): Bitmap
 
         external fun mosaicEffects(src: Bitmap): Bitmap
+
+        external fun groundGlassEffects(src: Bitmap): Bitmap
     }
 }

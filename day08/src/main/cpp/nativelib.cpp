@@ -167,3 +167,27 @@ Java_com_ygq_ndk_day08_NativeLib_00024Companion_mosaicEffects(JNIEnv *env, jobje
     mat2bitmap(env, src, bitmap);
     return bitmap;
 }
+
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_com_ygq_ndk_day08_NativeLib_00024Companion_groundGlassEffects(JNIEnv *env, jobject thiz, jobject bitmap) {
+    Mat src;
+    bitmap2Mat(env, src, bitmap);
+
+    int w = src.cols;
+    int h = src.rows;
+
+    // 毛玻璃块大小 取区域内的随机像素
+    int size = 50;
+
+    RNG rng(time(NULL));
+    for (int row = 0; row < h - size; ++row) {
+        for (int col = 0; col < w - size; ++col) {
+            int random = rng.uniform(0, size);
+            // size*size 分配随机像素值
+            src.at<Vec4b>(row, col) = src.at<Vec4b>(row + random, col + random);
+        }
+    }
+    mat2bitmap(env, src, bitmap);
+    return bitmap;
+}

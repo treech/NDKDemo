@@ -32,5 +32,9 @@ class MainActivity : AppCompatActivity() {
         val dest3 = src.copy(src.config, true)
         val againstBitmap3 = NativeLib.mosaicEffects(dest3)
         binding.ivDest3.setImageBitmap(againstBitmap3)
+
+        val dest4 = src.copy(src.config, true)
+        val againstBitmap4 = NativeLib.groundGlassEffects(dest4)
+        binding.ivDest4.setImageBitmap(againstBitmap4)
     }
 }
